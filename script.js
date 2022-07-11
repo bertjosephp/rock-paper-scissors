@@ -50,6 +50,17 @@ function displaySelection(playerSelection, computerSelection) {
     console.log(`You: ${playerSelection}   vs.   Computer: ${computerSelection}`);
 }
 
+playerScore = 0;
+computerScore = 0;
+
+function updateScore(num) {
+    if (num === 1) {
+        playerScore++;
+    } else if (num === 2) {
+        computerScore++;
+    }
+}
+
 function playRound(playerSelection, computerSelection) {
     displaySelection(playerSelection, computerSelection);
     if (
@@ -57,12 +68,14 @@ function playRound(playerSelection, computerSelection) {
         (playerSelection === "Paper" && computerSelection === "Rock") ||
         (playerSelection === "Scissors" && computerSelection === "Paper")
     ) {
+        updateScore(1);
         return `You win! ${playerSelection} beats ${computerSelection}`;
     } else if (
         (playerSelection === "Rock" && computerSelection === "Paper") ||
         (playerSelection === "Paper" && computerSelection === "Scissors") ||
         (playerSelection === "Scissors" && computerSelection === "Rock")
     ) {
+        updateScore(2);
         return `You lose! ${computerSelection} beats ${playerSelection}`;
     } else if (
         (playerSelection === "Rock" && computerSelection === "Rock") ||
@@ -73,9 +86,25 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
+function declareWinner(playerScore, computerScore) {
+    let displayMsg1 = "       ===== GAME RESULTS =====\n"
+    let displayMsg2 = `       You: ${playerScore}   |   Computer: ${computerScore}\n`;
+    if (playerScore > computerScore) {
+        return displayMsg1 + displayMsg2 + "       ======= You win! =======";
+    } else if (playerScore < computerScore) {
+        return displayMsg1 + displayMsg2 + "       ==== Computer wins! ====";
+    } else {
+        return displayMsg1 + displayMsg2 + "       ===== It's a draw! =====";
+    }
+}
+
 function game() {
     for (let i = 0; i < 5; i++) {
+        console.log("**************************************");
+        console.log(`Round ${i + 1}\n`)
         console.log(playRound(playerPlay(), computerPlay()));
     }
+    console.log("**************************************");
+    console.log(declareWinner(playerScore, computerScore));
 }
 
