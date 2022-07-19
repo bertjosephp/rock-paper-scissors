@@ -1,3 +1,29 @@
+let playerSelection;
+let computerSelection;
+playerScore = 0;
+computerScore = 0;
+
+const buttons = document.querySelectorAll('button');
+const resultsContainer = document.querySelector('.results-container');
+
+const playerChoiceContainer = document.querySelector('.player-choice-container');
+playerChoiceContainer.setAttribute('style', 'font-size: 100px; text-align: center;');
+
+const playerScoreContainer = document.querySelector('.player-score-container');
+playerScoreContainer.setAttribute('style', 'font-size: 25px; text-align: center;');
+
+const computerChoiceContainer = document.querySelector('.computer-choice-container');
+computerChoiceContainer.setAttribute('style', 'font-size: 100px; text-align: center');
+
+const computerScoreContainer = document.querySelector('.computer-score-container');
+computerScoreContainer.setAttribute('style', 'font-size: 25px; text-align: center;');
+
+const messageContainer = document.querySelector('.message-container');
+messageContainer.setAttribute('style', 'font-size: 45px; margin-bottom: 0; text-align: center');
+messageContainer.textContent = "First to score 5 points wins!";
+
+const restartMessageContainer = document.createElement('div');
+
 function computerPlay() {
     let randomNumber = Math.floor(Math.random() * 3) + 1;
     let computerSelection;
@@ -17,41 +43,49 @@ function computerPlay() {
     return computerSelection;
 }
 
-function capitalize(str) {
-    let strLower = str.toLowerCase();
-
-    let strFirstLetter = strLower.slice(0, 1);
-    strFirstLetter = strFirstLetter.toUpperCase();
-
-    let strRestOfLetters = strLower.slice(1);
-
-    return strFirstLetter + strRestOfLetters;
-}
-
-function playerPlay() {
-    let playerSelection;
-    let validChoice = true;
-    while (validChoice) {
-        playerSelection = prompt("Enter your choice (rock, paper, scissors): ");
-        playerSelection = capitalize(playerSelection);
-
-        if (
-            (playerSelection === "Rock") ||
-            (playerSelection === "Paper") ||
-            (playerSelection === "Scissors")
-        ) {
-            validChoice = false;
-        }
+function playerPlay(e) {
+    switch (e.target.classList[0]) {
+        case "rock-button":
+            playerSelection = "Rock";
+            break;
+        case "paper-button":
+            playerSelection = "Paper";
+            break;
+        case "scissors-button":
+            playerSelection = "Scissors"
+            break;
     }
     return playerSelection;
 }
 
 function displaySelection(playerSelection, computerSelection) {
-    console.log(`You: ${playerSelection}   vs.   Computer: ${computerSelection}`);
-}
+    switch (playerSelection) {
+        case "Rock":
+            playerChoiceContainer.textContent = "✊";
+            break;
+        case "Paper":
+            playerChoiceContainer.textContent = "✋";
+            break;
+        case "Scissors":
+            playerChoiceContainer.textContent = "✌";
+            break;
+    }
+    
+    switch (computerSelection) {
+        case "Rock":
+            computerChoiceContainer.textContent = "✊";
+            break;
+        case "Paper":
+            computerChoiceContainer.textContent = "✋";
+            break;
+        case "Scissors":
+            computerChoiceContainer.textContent = "✌";
+            break;
+    }
 
-playerScore = 0;
-computerScore = 0;
+    playerScoreContainer.textContent = `Your score: ${playerScore}`;
+    computerScoreContainer.textContent = `Computer score: ${computerScore}`;
+}
 
 function updateScore(num) {
     if (num === 1) {
@@ -62,49 +96,62 @@ function updateScore(num) {
 }
 
 function playRound(playerSelection, computerSelection) {
-    displaySelection(playerSelection, computerSelection);
     if (
         (playerSelection === "Rock" && computerSelection === "Scissors") ||
         (playerSelection === "Paper" && computerSelection === "Rock") ||
         (playerSelection === "Scissors" && computerSelection === "Paper")
     ) {
         updateScore(1);
-        return `You win! ${playerSelection} beats ${computerSelection}`;
+        messageContainer.textContent = `You win! ${playerSelection} beats ${computerSelection}`;
     } else if (
         (playerSelection === "Rock" && computerSelection === "Paper") ||
         (playerSelection === "Paper" && computerSelection === "Scissors") ||
         (playerSelection === "Scissors" && computerSelection === "Rock")
     ) {
         updateScore(2);
-        return `You lose! ${computerSelection} beats ${playerSelection}`;
+        messageContainer.textContent = `You lose! ${computerSelection} beats ${playerSelection}`;
     } else if (
         (playerSelection === "Rock" && computerSelection === "Rock") ||
         (playerSelection === "Paper" && computerSelection === "Paper") ||
         (playerSelection === "Scissors" && computerSelection === "Scissors")
     ) {
-        return "It's a tie!";
+        messageContainer.textContent = "It's a tie!";
     }
+    displaySelection(playerSelection, computerSelection);
 }
 
-function declareWinner(playerScore, computerScore) {
-    let displayMsg1 = "       ===== GAME RESULTS =====\n"
-    let displayMsg2 = `       You: ${playerScore}   |   Computer: ${computerScore}\n`;
+function declareWinner() {
     if (playerScore > computerScore) {
-        return displayMsg1 + displayMsg2 + "       ======= You win! =======";
+        messageContainer.textContent = "You win!";
     } else if (playerScore < computerScore) {
-        return displayMsg1 + displayMsg2 + "       ==== Computer wins! ====";
-    } else {
-        return displayMsg1 + displayMsg2 + "       ===== It's a draw! =====";
+        messageContainer.textContent = "Computer wins!";
     }
 }
 
-function game() {
-    for (let i = 0; i < 5; i++) {
-        console.log("**************************************");
-        console.log(`Round ${i + 1}\n`)
-        console.log(playRound(playerPlay(), computerPlay()));
-    }
-    console.log("**************************************");
-    console.log(declareWinner(playerScore, computerScore));
+function restartGame() {
+    restartMessageContainer.setAttribute('style', 'font-size: 45px; background-color: #092238; color: #e7eaf6');
+    restartMessageContainer.setAttribute('style', 'padding: 10px 15px; margin-top: 40px');
+    restartMessageContainer.textContent = "Restarting game . . .";
+    resultsContainer.appendChild(restartMessageContainer);
+    playerScore = 0;
+    computerScore = 0;
 }
 
+buttons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+        if (restartMessageContainer.textContent === "Restarting game . . .") {
+            restartMessageContainer.textContent = "";
+            resultsContainer.removeChild(restartMessageContainer);
+        }
+        
+        playerSelection = playerPlay(e);
+        computerSelection = computerPlay();
+
+        playRound(playerSelection, computerSelection);
+
+        if (playerScore === 5 || computerScore === 5) {
+            declareWinner();
+            restartGame();
+        }
+    });
+});
