@@ -7,19 +7,19 @@ const buttons = document.querySelectorAll('button');
 const resultsContainer = document.querySelector('.results-container');
 
 const playerChoiceContainer = document.querySelector('.player-choice-container');
-playerChoiceContainer.setAttribute('style', 'font-size: 100px; text-align: center;');
+playerChoiceContainer.setAttribute('style', 'font-size: 4rem; text-align: center;');
 
 const playerScoreContainer = document.querySelector('.player-score-container');
 playerScoreContainer.setAttribute('style', 'font-size: 25px; text-align: center;');
 
 const computerChoiceContainer = document.querySelector('.computer-choice-container');
-computerChoiceContainer.setAttribute('style', 'font-size: 100px; text-align: center');
+computerChoiceContainer.setAttribute('style', 'font-size: 4rem; text-align: center');
 
 const computerScoreContainer = document.querySelector('.computer-score-container');
 computerScoreContainer.setAttribute('style', 'font-size: 25px; text-align: center;');
 
 const messageContainer = document.querySelector('.message-container');
-messageContainer.setAttribute('style', 'font-size: 45px; margin-bottom: 0; text-align: center');
+messageContainer.setAttribute('style', 'font-size: 45px; margin: 0 auto; text-align: center');
 messageContainer.textContent = "First to score 5 points wins!";
 
 const restartButton = document.createElement('button');
