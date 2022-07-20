@@ -134,7 +134,7 @@ function endGame() {
     });
 
     restartButton.setAttribute('style', 'font-size: 45px; background-color: #092238; color: #e7eaf6');
-    restartButton.setAttribute('style', 'padding: 10px 15px; margin-top: 40px');
+    restartButton.setAttribute('style', 'padding: 10px 15px; margin-top: 40px; cursor: pointer');
     restartButton.textContent = "Restart";
     resultsContainer.appendChild(restartButton);
 }
