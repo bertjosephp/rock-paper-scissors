@@ -47,10 +47,6 @@ body {
     justify-content: space-around;
     gap: 1.5rem;
     padding: 1rem;
-    background-color: #38598b;
-    border-style: double;
-    border-color: #092238;
-    border-width: 15px;
 }
 
 .buttons-container button {
