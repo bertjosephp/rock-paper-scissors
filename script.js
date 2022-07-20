@@ -22,7 +22,7 @@ const messageContainer = document.querySelector('.message-container');
 messageContainer.setAttribute('style', 'font-size: 45px; margin-bottom: 0; text-align: center');
 messageContainer.textContent = "First to score 5 points wins!";
 
-const restartMessageContainer = document.createElement('div');
+const restartButton = document.createElement('button');
 
 function computerPlay() {
     let randomNumber = Math.floor(Math.random() * 3) + 1;
@@ -128,22 +128,26 @@ function declareWinner() {
     }
 }
 
+function endGame() {
+    buttons.forEach((button) => {
+        button.setAttribute('disabled', '');
+    });
+
+    restartButton.setAttribute('style', 'font-size: 45px; background-color: #092238; color: #e7eaf6');
+    restartButton.setAttribute('style', 'padding: 10px 15px; margin-top: 40px');
+    restartButton.textContent = "Restart";
+    resultsContainer.appendChild(restartButton);
+}
+
 function restartGame() {
-    restartMessageContainer.setAttribute('style', 'font-size: 45px; background-color: #092238; color: #e7eaf6');
-    restartMessageContainer.setAttribute('style', 'padding: 10px 15px; margin-top: 40px');
-    restartMessageContainer.textContent = "Restarting game . . .";
-    resultsContainer.appendChild(restartMessageContainer);
-    playerScore = 0;
-    computerScore = 0;
+    restartButton.addEventListener('click', () => {
+        window.location.reload();
+    })
+    
 }
 
 buttons.forEach((button) => {
     button.addEventListener('click', (e) => {
-        if (restartMessageContainer.textContent === "Restarting game . . .") {
-            restartMessageContainer.textContent = "";
-            resultsContainer.removeChild(restartMessageContainer);
-        }
-        
         playerSelection = playerPlay(e);
         computerSelection = computerPlay();
 
@@ -151,6 +155,7 @@ buttons.forEach((button) => {
 
         if (playerScore === 5 || computerScore === 5) {
             declareWinner();
+            endGame();
             restartGame();
         }
     });
