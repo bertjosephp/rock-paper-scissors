@@ -133,9 +133,12 @@ function endGame() {
         button.setAttribute('disabled', '');
     });
 
-    restartButton.setAttribute('style', 'font-size: 45px; background-color: #092238; color: #e7eaf6');
-    restartButton.setAttribute('style', 'padding: 10px 15px; margin-top: 40px; cursor: pointer');
-    restartButton.textContent = "Restart";
+    restartButton.style.fontSize = '1rem';
+    restartButton.style.fontFamily = 'Arial';
+    restartButton.style.marginTop = '30px';
+    restartButton.style.padding = '5px 10px';
+    restartButton.style.cursor = 'pointer';
+    restartButton.textContent = "RESTART";
     resultsContainer.appendChild(restartButton);
 }
 
